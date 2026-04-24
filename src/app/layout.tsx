@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
+import { ProveedorStore } from "@/store/proveedorStore";
+
 import "./globals.css";
 
 const fuentePrincipal = Geist({
@@ -14,7 +17,7 @@ const fuenteCodigo = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Dashboard PSP",
-  description: "Base del dashboard en Next.js con pantalla de acceso.",
+  description: "Base del dashboard con Next.js y arquitectura por capas.",
 };
 
 export default function DisenoRaiz({
@@ -27,7 +30,9 @@ export default function DisenoRaiz({
       lang="es"
       className={`${fuentePrincipal.variable} ${fuenteCodigo.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <ProveedorStore>{children}</ProveedorStore>
+      </body>
     </html>
   );
 }

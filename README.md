@@ -1,389 +1,390 @@
 # Dashboard PSP
 
-Proyecto base en Next.js con una pantalla de acceso visual y una estructura sencilla para seguir creciendo.
+Proyecto Next.js organizado con una arquitectura por capas inspirada en el articulo:
 
-## Objetivo actual
+[Clean Code and Layered Architecture in Next.js: Organizing Frontend for Backend Consistency](https://medium.com/%40patrick.cunha336/clean-code-and-layered-architecture-in-next-js-organizing-frontend-for-backend-consistency-d2a4324c70fa)
 
-- Tener una pantalla `Login` clara y agradable.
-- Mantener el codigo en espanol siempre que sea posible.
-- Dejar lista la base para conectar una API mas adelante.
-- Explicar como se conecta cada archivo para que el proyecto se entienda rapido.
+## Por que guiarnos por esta arquitectura
 
-## Estructura del proyecto
+Esta estructura vale la pena porque separa el proyecto por responsabilidad y no por mezcla de archivos.
+
+### 1. El frontend habla el mismo idioma que el backend
+
+El articulo propone trabajar con capas como `interfaces`, `api`, `entities` y `processes`.
+
+Eso ayuda mucho porque:
+
+- `interfaces` define contratos de datos.
+- `api` concentra llamadas externas.
+- `entities` maneja el estado de una sola entidad.
+- `processes` coordina flujos mas completos.
+
+Cuando el backend crezca, el frontend ya tendra lugares claros para cada tipo de logica.
+
+### 2. Las rutas de Next.js quedan mas limpias
+
+En Next.js, `app` debe enfocarse en rutas, layouts y navegacion.
+
+En este proyecto:
+
+- `src/app/login/page.tsx` solo representa la ruta `/login`
+- la UI real vive en `src/components/login/pantalla-login.tsx`
+
+Eso hace que la carpeta `app` sea facil de leer y siga la idea del App Router.
+
+### 3. Evitamos mezclar UI con red y estado global
+
+Un error comun es meter en un mismo archivo:
+
+- JSX
+- `fetch`
+- manejo de errores
+- estado global
+- tipos
+
+Con esta estructura, cada capa hace una sola cosa.
+
+### 4. Escala mejor para un dashboard real
+
+Un dashboard suele crecer hacia:
+
+- autenticacion
+- tablas
+- filtros
+- reportes
+- permisos
+- procesos multi-paso
+
+Si la estructura ya tiene `entities` y `processes`, crecer duele menos.
+
+### 5. Hace mas simple probar, cambiar y mantener
+
+Si una llamada al backend cambia:
+
+- tocas `api`
+
+Si cambia el modelo de datos:
+
+- tocas `interfaces`
+
+Si cambia el estado de autenticacion:
+
+- tocas `entities`
+
+Si cambia el flujo de login:
+
+- tocas `processes`
+
+La UI queda mas protegida de cambios internos.
+
+## Fuentes de referencia
+
+- Articulo base: [Medium](https://medium.com/%40patrick.cunha336/clean-code-and-layered-architecture-in-next-js-organizing-frontend-for-backend-consistency-d2a4324c70fa)
+- Redux Toolkit: [Getting Started](https://redux-toolkit.js.org/introduction/getting-started)
+- Next.js App Router: [Project Structure](https://nextjs.org/docs/app/getting-started/project-structure)
+
+## Estructura actual
 
 ```text
 src/
   app/
+    globals.css
     layout.tsx
     page.tsx
-    globals.css
     login/
       page.tsx
-      page.module.css
-  lib/
-    autenticacion.ts
+  components/
+    login/
+      pantalla-login.tsx
+      pantalla-login.module.css
+  api/
+    autenticacionApi.ts
+  interfaces/
+    autenticacion.interface.ts
+  store/
+    index.ts
+    hooks.ts
+    proveedorStore.tsx
+    entities/
+      autenticacionEntidad.ts
+    processes/
+      inicioSesionProceso.ts
 ```
 
-## Que hace cada archivo
+## Que hace cada capa
 
-### `src/app/layout.tsx`
+### `app`
 
-Es el layout raiz. Next.js lo carga automaticamente en todas las rutas.
+Contiene rutas y estructura de Next.js.
 
-Aqui se definen:
+- `layout.tsx`: layout raiz
+- `page.tsx`: redireccion desde `/`
+- `login/page.tsx`: ruta `/login`
 
-- las fuentes globales
-- el idioma del documento
-- el `metadata` del sitio
-- el `body` que envuelve a toda la aplicacion
+### `components`
 
-### `src/app/page.tsx`
+Contiene la interfaz visual reutilizable.
 
-Es la ruta `/`.
+- `components/login/pantalla-login.tsx`: formulario y tarjetas de resumen
+- `components/login/pantalla-login.module.css`: estilos del componente
 
-Su unica responsabilidad es redirigir al usuario hacia `/login`.
+### `interfaces`
 
-### `src/app/globals.css`
+Define las formas de los datos.
 
-Contiene:
+- `CredencialesAcceso`
+- `RespuestaAutenticacion`
+- `EstadoAutenticacion`
 
-- variables globales de color
-- estilos base del `body`
-- reglas generales para botones, inputs y foco visual
+### `api`
 
-### `src/app/login/page.tsx`
+Separa la comunicacion con backend.
 
-Es la ruta `/login`.
+- `solicitarInicioSesion()`
 
-Este archivo:
+Hoy devuelve un error controlado porque la API real aun no existe.
 
-- crea los datos de ejemplo que llenan la vista
-- pinta el formulario
-- pinta la vista previa del dashboard
-- llama a una funcion auxiliar para decidir el color de algunos elementos
+### `store/entities`
 
-### `src/app/login/page.module.css`
+Representa estado y logica de una sola entidad.
 
-Contiene los estilos solo de la pantalla `Login`.
+En este caso:
+
+- `autenticacionEntidad.ts`
+
+Maneja:
+
+- correo
+- clave
+- estado de la solicitud
+- mensaje actual
+
+### `store/processes`
+
+Coordina flujos que usan varias capas.
+
+En este caso:
+
+- `inicioSesionProceso.ts`
 
 Su trabajo es:
 
-- definir el layout principal
-- estilizar el formulario
-- estilizar las tarjetas del dashboard
-- controlar el comportamiento responsive
+1. recibir credenciales
+2. llamar a `api`
+3. devolver exito o error
 
-### `src/lib/autenticacion.ts`
+### `store/index.ts`
 
-Es la base de la futura conexion con backend.
+Construye el store global con `configureStore()`.
 
-Por ahora:
+### `store/proveedorStore.tsx`
 
-- define el tipo `CredencialesLogin`
-- define la funcion `iniciarSesion`
-- todavia no hace `fetch`
+Conecta React con Redux usando `Provider`.
 
-## Flujo simple de la aplicacion
+### `store/hooks.ts`
 
-1. El navegador entra a `/`.
-2. Next.js carga `src/app/page.tsx`.
-3. `page.tsx` ejecuta `redirect("/login")`.
-4. Next.js renderiza `src/app/login/page.tsx`.
-5. `page.tsx` importa `page.module.css` para aplicar el estilo.
-6. `PaginaLogin()` dibuja el formulario y la vista previa.
-7. La funcion `obtenerClaseDeTono()` se usa dentro de `PaginaLogin()` para elegir clases de color.
-8. `iniciarSesion()` aun no se llama, pero sera el punto de entrada cuando conectemos la API.
+Expone hooks tipados para no repetir tipos en cada componente.
 
-## Funciones y donde son llamadas
+## Flujo del login
+
+1. El usuario entra a `/`.
+2. `src/app/page.tsx` redirige a `/login`.
+3. `src/app/login/page.tsx` renderiza `PantallaLogin`.
+4. `PantallaLogin` lee y actualiza estado desde Redux.
+5. Al enviar el formulario, `PantallaLogin` dispara `iniciarSesionProceso`.
+6. `iniciarSesionProceso` llama a `solicitarInicioSesion`.
+7. La API responde con error porque aun no existe backend real.
+8. `autenticacionEntidad` guarda el mensaje de error.
+9. La UI muestra ese mensaje al usuario.
+
+## Funciones importantes y donde son llamadas
 
 ### `DisenoRaiz`
 
 Archivo: `src/app/layout.tsx`
 
 - La llama Next.js automaticamente.
-- Envuelve todas las paginas.
+- Envuelve toda la aplicacion.
 
 ### `Inicio`
 
 Archivo: `src/app/page.tsx`
 
-- La llama Next.js cuando alguien entra a `/`.
-- Su unica accion es redirigir a `/login`.
+- La llama Next.js cuando se entra a `/`.
+- Redirige a `/login`.
 
 ### `PaginaLogin`
 
 Archivo: `src/app/login/page.tsx`
 
-- La llama Next.js cuando alguien entra a `/login`.
-- Renderiza toda la interfaz del acceso.
+- La llama Next.js cuando se entra a `/login`.
+- Renderiza `PantallaLogin`.
+
+### `PantallaLogin`
+
+Archivo: `src/components/login/pantalla-login.tsx`
+
+- La llama `PaginaLogin`.
+- Dibuja la pantalla.
+- Lee estado de Redux.
+- Despacha acciones y procesos.
 
 ### `obtenerClaseDeTono`
 
-Archivo: `src/app/login/page.tsx`
+Archivo: `src/components/login/pantalla-login.tsx`
 
-- La llama `PaginaLogin`.
-- Se usa dentro de los `.map()` de tarjetas y modulos.
-- Recibe un texto como `"rojo"`, `"verde"` o `"azul"`.
-- Devuelve la clase CSS correcta para ese tono.
+- La llama `PantallaLogin`.
+- Convierte un tono logico en una clase CSS.
 
-### `iniciarSesion`
+### `manejarCambioCorreo`
 
-Archivo: `src/lib/autenticacion.ts`
+Archivo: `src/components/login/pantalla-login.tsx`
 
-- Todavia no la llama nadie.
-- Se conectara al formulario cuando el login tenga backend real.
+- La llama el `input` de correo mediante `onChange`.
+- Actualiza el correo en la entidad de autenticacion.
 
-## Explicacion paso a paso del codigo
+### `manejarCambioClave`
 
-### `src/app/layout.tsx`
+Archivo: `src/components/login/pantalla-login.tsx`
 
-```tsx
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+- La llama el `input` de clave mediante `onChange`.
+- Actualiza la clave en la entidad de autenticacion.
 
-const fuentePrincipal = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+### `manejarEnvio`
 
-const fuenteCodigo = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+Archivo: `src/components/login/pantalla-login.tsx`
 
-export const metadata: Metadata = {
-  title: "Dashboard PSP",
-  description: "Base del dashboard en Next.js con pantalla de acceso.",
-};
+- La llama el formulario mediante `onSubmit`.
+- Limpia mensajes anteriores.
+- Ejecuta `iniciarSesionProceso`.
 
-export default function DisenoRaiz({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html
-      lang="es"
-      className={`${fuentePrincipal.variable} ${fuenteCodigo.variable}`}
-    >
-      <body>{children}</body>
-    </html>
-  );
-}
-```
+### `solicitarInicioSesion`
 
-Explicacion:
+Archivo: `src/api/autenticacionApi.ts`
 
-1. `import type { Metadata } from "next";`
-   Toma el tipo oficial de metadata de Next.js.
-2. `import { Geist, Geist_Mono } from "next/font/google";`
-   Importa dos fuentes desde el sistema de fuentes de Next.
-3. `import "./globals.css";`
-   Carga los estilos globales.
-4. `const fuentePrincipal = Geist(...)`
-   Crea la fuente principal.
-5. `variable: "--font-geist-sans"`
-   Guarda la fuente en una variable CSS reutilizable.
-6. `const fuenteCodigo = Geist_Mono(...)`
-   Crea la fuente mono para codigo o textos tecnicos.
-7. `export const metadata`
-   Define el titulo y descripcion del sitio.
-8. `export default function DisenoRaiz(...)`
-   Declara el layout principal.
-9. `children`
-   Es el contenido de cada pagina que Next mete dentro del layout.
-10. `<html lang="es" ...>`
-    Define el idioma del documento y aplica las variables de fuente.
-11. `<body>{children}</body>`
-    Renderiza la pagina actual dentro del `body`.
+- La llama `iniciarSesionProceso`.
+- Es el unico punto pensado para hablar con backend.
 
-### `src/app/page.tsx`
+### `iniciarSesionProceso`
 
-```tsx
-import { redirect } from "next/navigation";
+Archivo: `src/store/processes/inicioSesionProceso.ts`
 
-export default function Inicio() {
-  redirect("/login");
-}
-```
+- La llama `PantallaLogin`.
+- Usa la capa `api`.
+- Devuelve exito o error al store.
 
-Explicacion:
+### `actualizarCorreo`
 
-1. `import { redirect } from "next/navigation";`
-   Importa la utilidad oficial de Next para redirigir.
-2. `export default function Inicio()`
-   Declara la pagina raiz `/`.
-3. `redirect("/login");`
-   Manda al usuario directamente a la pantalla de acceso.
+Archivo: `src/store/entities/autenticacionEntidad.ts`
+
+- La llama `manejarCambioCorreo`.
+- Guarda el correo en el estado global.
+
+### `actualizarClave`
+
+Archivo: `src/store/entities/autenticacionEntidad.ts`
+
+- La llama `manejarCambioClave`.
+- Guarda la clave en el estado global.
+
+### `limpiarMensaje`
+
+Archivo: `src/store/entities/autenticacionEntidad.ts`
+
+- La llama `manejarEnvio`.
+- Limpia mensajes anteriores antes de intentar el proceso.
+
+## Explicacion del codigo principal
 
 ### `src/app/login/page.tsx`
 
 ```tsx
-import estilos from "./page.module.css";
-
-type Tono = "rojo" | "verde" | "azul";
-
-type TarjetaResumen = {
-  titulo: string;
-  valor: string;
-  tono: Tono;
-  descripcion: string;
-};
-
-type ModuloPanel = {
-  nombre: string;
-  estado: string;
-  tono: Tono;
-  detalle: string;
-};
-
-type ActividadReciente = {
-  modulo: string;
-  accion: string;
-  hora: string;
-};
-
-const tarjetasResumen: TarjetaResumen[] = [...];
-const modulosPanel: ModuloPanel[] = [...];
-const actividadesRecientes: ActividadReciente[] = [...];
-
-function obtenerClaseDeTono(tono: Tono) {
-  return estilos[tono];
-}
+import { PantallaLogin } from "@/components/login/pantalla-login";
 
 export default function PaginaLogin() {
-  return (
-    <main className={estilos.pagina}>
-      ...
-    </main>
-  );
+  return <PantallaLogin />;
 }
 ```
 
-Explicacion:
+Linea por linea:
 
-1. `import estilos from "./page.module.css";`
-   Carga los estilos exclusivos de esta vista.
-2. `type Tono = ...`
-   Limita los colores permitidos para evitar errores de escritura.
-3. `type TarjetaResumen`
-   Define la forma de cada tarjeta superior.
-4. `type ModuloPanel`
-   Define la forma de cada modulo del dashboard.
-5. `type ActividadReciente`
-   Define la forma de cada fila de actividad.
-6. `const tarjetasResumen`
-   Guarda los datos de las tarjetas de resumen.
-7. `const modulosPanel`
-   Guarda los datos de los modulos mostrados en la vista previa.
-8. `const actividadesRecientes`
-   Guarda los eventos recientes.
-9. `function obtenerClaseDeTono(tono)`
-   Convierte un tono logico en una clase CSS real.
-10. `return estilos[tono]`
-    Devuelve `estilos.rojo`, `estilos.verde` o `estilos.azul`.
-11. `export default function PaginaLogin()`
-    Declara la pagina `/login`.
-12. `<main className={estilos.pagina}>`
-    Crea el contenedor principal de la vista.
-13. Dentro de `PaginaLogin()` se usan varios `.map()`
-    para recorrer datos y renderizar tarjetas, modulos y actividades.
+1. Importa el componente visual principal del login.
+2. Declara la pagina que responde a la ruta `/login`.
+3. Renderiza la pantalla real.
 
-### `src/lib/autenticacion.ts`
+### `src/components/login/pantalla-login.tsx`
 
-```ts
-export type CredencialesLogin = {
-  correo: string;
-  clave: string;
-};
+Este archivo concentra la UI del acceso.
 
-export async function iniciarSesion(credenciales: CredencialesLogin) {
-  void credenciales;
+Partes clave:
 
-  throw new Error("La autenticacion todavia no esta conectada a una API.");
-}
-```
+1. Tipos locales para tonos y tarjetas.
+2. Datos `tarjetasResumen`.
+3. `obtenerClaseDeTono()` para conectar datos con CSS.
+4. Hooks de Redux para leer y escribir estado.
+5. Funciones de eventos del formulario.
+6. JSX del panel de acceso.
 
-Explicacion:
+### `src/store/entities/autenticacionEntidad.ts`
 
-1. `export type CredencialesLogin`
-   Define la forma de los datos que tendra el login real.
-2. `correo: string`
-   Campo para el email o usuario.
-3. `clave: string`
-   Campo para la contrasena.
-4. `export async function iniciarSesion(...)`
-   Declara la funcion que hara el login en el futuro.
-5. `void credenciales;`
-   Evita una advertencia mientras la funcion todavia no usa el parametro.
-6. `throw new Error(...)`
-   Deja claro que aun no existe conexion con backend.
+Este archivo usa `createSlice()` de Redux Toolkit.
 
-## CSS explicado por bloques
+Su responsabilidad es:
 
-### `.pagina`
+- guardar el estado de autenticacion
+- exponer acciones simples
+- reaccionar a `pending`, `fulfilled` y `rejected` del proceso
 
-- ocupa toda la altura de la ventana
-- centra el contenido
-- agrega un fondo suave
+### `src/store/processes/inicioSesionProceso.ts`
 
-### `.contenedorPrincipal`
+Este archivo usa `createAsyncThunk()`.
 
-- crea dos columnas
-- una para el formulario
-- otra para la vista del dashboard
+Su responsabilidad es:
 
-### `.panelFormulario`
+- tomar credenciales
+- llamar a la capa `api`
+- traducir errores tecnicos a un mensaje usable
 
-- agrupa marca, titulo y formulario
-- mantiene separacion vertical clara
+## Decisiones de clean code aplicadas
 
-### `.panelVista`
+- Las rutas viven en `app`.
+- La UI vive en `components`.
+- Los contratos viven en `interfaces`.
+- La red vive en `api`.
+- El estado de una sola entidad vive en `entities`.
+- Los flujos multi-paso viven en `processes`.
+- Cada archivo tiene una responsabilidad principal.
 
-- agrupa resumen, modulos y actividad
-- funciona como maqueta del dashboard
+## Cuando conviene esta estructura
 
-### `.rejillaResumen`
+Conviene cuando el proyecto va a crecer hacia:
 
-- usa `auto-fit`
-- evita que las tarjetas se corten
-- permite que bajen de fila cuando falta espacio
+- autenticacion real
+- dashboard con varias fuentes de datos
+- procesos de negocio
+- alineacion con backend
+- mantenimiento en equipo
 
-### `.rejillaInferior`
+No es solo para este login. Es una base para el dashboard completo.
 
-- organiza dos bloques inferiores
-- en pantallas pequenas se convierte en una sola columna
+## Como pedirme cambios despues
 
-## Como pedirme cambios mas adelante
+Puedes pedirme cosas como:
 
-Puedes usar frases directas como estas:
+- `crea la entidad de usuarios siguiendo esta arquitectura`
+- `agrega un proceso para recuperar clave`
+- `conecta autenticacionApi.ts con Flask`
+- `explicame el store paso a paso`
+- `crea el dashboard con esta misma arquitectura`
 
-- `Crea la pantalla dashboard con tabla, filtros y sidebar`
-- `Conecta el login con una API Flask en /auth/login`
-- `Agrega middleware para proteger /dashboard`
-- `Explicame src/app/login/page.tsx paso a paso`
-- `Convierte esta vista al estilo de una consola administrativa`
-- `Divide esta pantalla en componentes reutilizables`
-
-## Reglas practicas para este proyecto
-
-- Mantener nombres en espanol cuando no rompan una convencion de Next.js.
-- Usar `src/app` para rutas visibles.
-- Usar `src/lib` para logica tecnica y futuras llamadas HTTP.
-- Mantener el `Login` sencillo hasta que exista backend real.
-- Documentar en este `README` cada decision importante.
-
-## Ejecutar el proyecto
+## Ejecutar
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Validacion tecnica
-
-Comandos usados para comprobar que el proyecto esta sano:
+## Validar
 
 ```bash
 npm run lint

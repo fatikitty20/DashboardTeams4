@@ -1,0 +1,74 @@
+.content {
+  flex: 1;
+  padding: 15px;
+  background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 50%, #e8f5e8 100%);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fdf8 100%);
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(107, 142, 35, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.cardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #2f4f2f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cardValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: #6b8e23;
+  background: linear-gradient(45deg, #6b8e23, #556b2f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.table {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fdf8 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(107, 142, 35, 0.1);
+}
+
+.table th,
+.table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(107, 142, 35, 0.1);
+  font-size: 13px;
+}
+
+.table th {
+  background: linear-gradient(90deg, #6b8e23 0%, #556b2f 100%);
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+}
+
+.table tbody tr:hover {
+  background: linear-gradient(90deg, #f0f8f0 0%, #e8f5e8 100%);
+}

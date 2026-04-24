@@ -1,0 +1,33 @@
+.sidebar {
+  width: 220px;
+  background: linear-gradient(180deg, #2f4f2f 0%, #556b2f 50%, #6b8e23 100%);
+  color: white;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebarItem {
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sidebarItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.sidebarItem.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-left: 3px solid #fff;
+}
+
+.settingsSection {
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 15px;
+}

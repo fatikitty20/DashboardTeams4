@@ -1,0 +1,38 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  gap: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.google {
+  background-color: #4267b2;
+  color: white;
+  border: none;
+}
+
+.apple {
+  background-color: #000;
+  color: white;
+  border: none;
+}
+
+.email {
+  background-color: transparent;
+  color: #0046d5;
+  border: 1px solid #0046d5;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

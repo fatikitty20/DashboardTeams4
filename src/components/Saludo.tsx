@@ -1,5 +1,3 @@
-
-
 // Importamos React para poder usar componentes
 import React from "react";
 

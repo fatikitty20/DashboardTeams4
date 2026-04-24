@@ -1,0 +1,174 @@
+.pagina {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background:
+    radial-gradient(circle at top left, rgba(9, 114, 211, 0.1), transparent 30%),
+    linear-gradient(180deg, #f9fafc, #f3f4f7);
+}
+
+.contenedorPrincipal {
+  width: min(460px, 100%);
+}
+
+.panelFormulario {
+  border: 1px solid var(--color-borde);
+  border-radius: 24px;
+  background: var(--color-superficie);
+  box-shadow: var(--sombra-panel);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 36px 32px;
+}
+
+.bloqueMarca {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.etiqueta {
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-azul);
+  background: rgba(9, 114, 211, 0.12);
+}
+
+.titulo {
+  color: var(--color-texto);
+  line-height: 1.08;
+  font-size: clamp(34px, 5vw, 46px);
+}
+
+.textoPrincipal {
+  color: var(--color-texto-suave);
+  line-height: 1.65;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--color-texto);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.campo input {
+  height: 50px;
+  padding: 0 14px;
+  border: 1px solid var(--color-borde);
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--color-texto);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.campo input:focus {
+  border-color: var(--color-azul);
+  box-shadow: 0 0 0 4px rgba(9, 114, 211, 0.12);
+  transform: translateY(-1px);
+}
+
+.botonPrincipal {
+  height: 50px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--color-verde), #249a2f);
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.recuadroInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(9, 114, 211, 0.16);
+  background: rgba(9, 114, 211, 0.05);
+  color: var(--color-texto);
+  line-height: 1.6;
+}
+
+.rejillaResumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.tarjetaResumen {
+  min-height: 132px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--color-borde);
+  background: linear-gradient(180deg, #ffffff, var(--color-superficie-secundaria));
+}
+
+.punto {
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  background: var(--tono-activo);
+}
+
+.rojo {
+  --tono-activo: var(--color-rojo);
+}
+
+.verde {
+  --tono-activo: var(--color-verde);
+}
+
+.azul {
+  --tono-activo: var(--color-azul);
+}
+
+.tituloTarjeta {
+  color: var(--color-texto-suave);
+  font-size: 14px;
+}
+
+.valorTarjeta {
+  display: block;
+  margin: 8px 0;
+  color: var(--color-texto);
+  font-size: 38px;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .pagina {
+    padding: 18px 12px;
+  }
+
+  .panelFormulario {
+    padding: 24px 18px;
+  }
+
+  .valorTarjeta {
+    font-size: 34px;
+  }
+}

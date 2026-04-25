@@ -1,99 +1,64 @@
-/**
- * Página de inicio de sesión (Login)
- * 
- * Componente que renderiza el formulario de autenticación.
- * Maneja la validación de credenciales y la navegación después del login.
- * 
- * @module login/page
- */
-
-// "use client" indica que este componente se ejecuta en el navegador
-// Esto es necesario porque usamos hooks de React (useState) y navegación
 "use client";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-import { EyeIcon, EyeOffIcon, LogInIcon, MailIcon, LockIcon } from "../components/icons";
-import styles from "./login.module.css";
 
-// ============================================
-// FUNCIONES DE VALIDACIÓN
-// ============================================
+// Iconos SVG en línea
+const EyeIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  </svg>
+);
 
-/**
- * Valida el formato del correo electrónico
- * @param email - Correo a validar
- * @returns Mensaje de error vacío si es válido, o mensaje de error
- */
-const validateEmail = (email: string): string => {
-  if (!email) return "El correo es requerido";
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) return "Ingresa un correo válido";
-  return "";
-};
+const EyeOffIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+    <line x1="1" y1="1" x2="23" y2="23"></line>
+  </svg>
+);
 
-/**
- * Valida la contraseña del usuario
- * @param password - Contraseña a validar
- * @returns Mensaje de error vacío si es válido, o mensaje de error
- */
-const validatePassword = (password: string): string => {
-  if (!password) return "La contraseña es requerida";
-  if (password.length < 6) return "Mínimo 6 caracteres";
-  return "";
-};
+const LogInIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+    <polyline points="10 17 15 12 10 7"></polyline>
+    <line x1="15" y1="12" x2="3" y2="12"></line>
+  </svg>
+);
+
+const MailIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+    <polyline points="22,6 12,13 2,6"></polyline>
+  </svg>
+);
+
+const LockIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+  </svg>
+);
 
 
-// ============================================
-// COMPONENTE PRINCIPAL
-// ============================================
-
-/**
- * Componente de página de login
- * Maneja el estado del formulario y la autenticación del usuario
- */
 export default function Login() {
-  // useRouter: hook de Next.js para navegación programática
   const router = useRouter();
-  
-  // useSearchParams: obtiene parámetros de URL (ej: ?redirect=/dashboard)
   const searchParams = useSearchParams();
-  
-  // useAuth: hook personalizado que proporciona el contexto de autenticación
-  const { login } = useAuth();
-  
-  // Estados locales del formulario
-  const [email, setEmail] = useState("");           // Valor del campo email
-  const [password, setPassword] = useState("");     // Valor del campo contraseña
-  const [emailError, setEmailError] = useState(""); // Error de validación del email
-  const [passwordError, setPasswordError] = useState(""); // Error de validación del password
-  const [success, setSuccess] = useState(false);    // Muestra mensaje de éxito
-  const [showPassword, setShowPassword] = useState(false); // Alternar visibilidad password
-  const [isLoading, setIsLoading] = useState(false); // Estado de carga durante login
+  const { login, isAuthenticated } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  /**
-   * Maneja el evento de submit del formulario de login
-   * 1. Valida los campos
-   * 2. Si hay errores, los muestra
-   * 3. Si es válido, simula el login y redirige
-   */
   const handleLogin = () => {
-    // Validar campos
-    const emailErr = validateEmail(email);
-    const passwordErr = validatePassword(password);
-
-    if (emailErr || passwordErr) {
-      setEmailError(emailErr);
-      setPasswordError(passwordErr);
-      return;
-    }
-
     setEmailError("");
     setPasswordError("");
     setSuccess(false);
     setIsLoading(true);
-
     setTimeout(() => {
       setIsLoading(false);
       setSuccess(true);
@@ -104,22 +69,22 @@ export default function Login() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.backgroundPattern}></div>
-      <div className={styles.card}>
-        <div className={styles.logoContainer}>
-          <div className={styles.logo}>
+    <div style={styles.container}>
+      <div style={styles.backgroundPattern}></div>
+      <div style={styles.card}>
+        <div style={styles.logoContainer}>
+          <div style={styles.logo}>
             <LogInIcon />
           </div>
         </div>
         
-        <h1 className={styles.title}>Bienvenido</h1>
-        <p className={styles.subtitle}>Ingresa tus credenciales para continuar</p>
+        <h1 style={styles.title}>Bienvenido</h1>
+        <p style={styles.subtitle}>Ingresa tus credenciales para continuar</p>
 
-        <div className={styles.form}>
+        <div style={styles.form}>
           {/* INPUT CORREO */}
-          <div className={styles.inputGroup}>
-            <div className={styles.inputIcon}>
+          <div style={styles.inputGroup}>
+            <div style={styles.inputIcon}>
               <MailIcon />
             </div>
             <input
@@ -127,15 +92,18 @@ export default function Login() {
               placeholder="Correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={styles.input}
-              style={{ borderColor: emailError ? "#ef4444" : undefined, paddingLeft: "44px" }}
+              style={{
+                ...styles.input,
+                borderColor: emailError ? "#ef4444" : "#e5e7eb",
+                paddingLeft: "44px",
+              }}
             />
           </div>
-          {emailError && <p className={styles.error}>{emailError}</p>}
+          {emailError && <p style={styles.error}>{emailError}</p>}
 
           {/* INPUT CONTRASEÑA */}
-          <div className={styles.inputGroup}>
-            <div className={styles.inputIcon}>
+          <div style={styles.inputGroup}>
+            <div style={styles.inputIcon}>
               <LockIcon />
             </div>
             <input
@@ -143,27 +111,31 @@ export default function Login() {
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={styles.input}
-              style={{ borderColor: passwordError ? "#ef4444" : undefined, paddingLeft: "44px", paddingRight: "44px" }}
+              style={{
+                ...styles.input,
+                borderColor: passwordError ? "#ef4444" : "#e5e7eb",
+                paddingLeft: "44px",
+                paddingRight: "44px",
+              }}
             />
             <button
               onClick={() => setShowPassword(!showPassword)}
-              className={styles.showButton}
+              style={styles.showButton}
               type="button"
             >
               {showPassword ? <EyeOffIcon /> : <EyeIcon />}
             </button>
           </div>
-          {passwordError && <p className={styles.error}>{passwordError}</p>}
+          {passwordError && <p style={styles.error}>{passwordError}</p>}
 
           {/* BOTÓN LOGIN */}
           <button 
             onClick={handleLogin} 
-            className={styles.button}
+            style={styles.button}
             disabled={isLoading}
           >
             {isLoading ? (
-              <span className={styles.loadingText}>Verificando...</span>
+              <span style={styles.loadingText}>Verificando...</span>
             ) : (
               <>
                 <LogInIcon />
@@ -173,8 +145,8 @@ export default function Login() {
           </button>
 
           {success && (
-            <div className={styles.successMessage}>
-              <span className={styles.successIcon}>✓</span>
+            <div style={styles.successMessage}>
+              <span style={styles.successIcon}>✓</span>
               Login correcto
             </div>
           )}
@@ -183,6 +155,60 @@ export default function Login() {
     </div>
   );
 }
+
+const styles = {
+  container: {
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1e3a5f 100%)",
+    position: "relative" as const,
+    overflow: "hidden",
+  },
+  backgroundPattern: {
+    position: "absolute" as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundImage: `
+      radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 30%)
+    `,
+    pointerEvents: "none" as const,
+  },
+  card: {
+    background: "rgba(255, 255, 255, 0.95)",
+    backdropFilter: "blur(20px)",
+    padding: "40px",
+    borderRadius: "24px",
+    width: "100%",
+    maxWidth: "400px",
+    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
+    textAlign: "center" as const,
+    position: "relative" as const,
+    zIndex: 1,
+  },
+  logoContainer: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "24px",
+  },
+  logo: {
+    width: "72px",
+    height: "72px",
+    borderRadius: "20px",
+    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 10px 30px rgba(99, 102, 241, 0.4)",
+  },
+  title: {
+    fontSize: "28px",
+    fontWeight: "700",
     color: "#111827",
     marginBottom: "8px",
     margin: 0,

@@ -9,3 +9,4 @@ export { default as Spinner } from "./Spinner";
 export { default as Modal } from "./Modal";
 export { default as Progress } from "./Progress";
 export { default as Toggle } from "./Toggle";
+export { default as SidebarItem } from "./SidebarItem";

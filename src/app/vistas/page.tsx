@@ -1,13 +1,13 @@
 "use client";
 
-import { Button, Card, Badge, Avatar, Progress } from "../../components";
-import { useRouter } from "next/navigation";
+import { Button, Card, Badge, Avatar, Progress, SidebarItem } from "@/app/components";
+import { useAuth } from "../context/AuthContext";
 
 export default function Dashboard() {
-  const router = useRouter();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    router.push("/login");
+    logout();
   };
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#f3f4f6" }}>
@@ -97,15 +97,6 @@ export default function Dashboard() {
           </Card>
         </div>
       </main>
-    </div>
-  );
-}
-
-function SidebarItem({ icon, label }: { icon: string; label: string }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "12px 0", fontSize: 16, cursor: "pointer", width: "100%" }}>
-      <span style={{ fontSize: 20 }}>{icon}</span>
-      <span>{label}</span>
     </div>
   );
 }

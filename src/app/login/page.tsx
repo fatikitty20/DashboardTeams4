@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 // Iconos SVG en línea
 const EyeIcon = () => (
@@ -43,6 +44,8 @@ const LockIcon = () => (
 
 export default function Login() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { login, isAuthenticated } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -52,29 +55,17 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = () => {
-    let valid = true;
     setEmailError("");
     setPasswordError("");
     setSuccess(false);
-
-    if (email !== "kazita4@gmail.com") {
-      setEmailError("Correo incorrecto");
-      valid = false;
-    }
-
-    if (password !== "343gear2A@") {
-      setPasswordError("Contraseña incorrecta");
-      valid = false;
-    }
-
-    if (valid) {
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        setSuccess(true);
-        router.push("/vistas/dashboard");
-      }, 800);
-    }
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setSuccess(true);
+      login();
+      const redirect = searchParams?.get("redirect") || "/vistas/dashboard";
+      router.push(redirect);
+    }, 800);
   };
 
   return (

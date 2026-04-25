@@ -63,7 +63,7 @@ export default function Login() {
       setIsLoading(false);
       setSuccess(true);
       login();
-      const redirect = searchParams?.get("redirect") || "/vistas/dashboard";
+      const redirect = searchParams?.get("redirect") || "/vistas";
       router.push(redirect);
     }, 800);
   };

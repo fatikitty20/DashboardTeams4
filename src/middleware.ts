@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (isPublicPath && hasToken) {
-    return NextResponse.redirect(new URL("/vistas/dashboard", request.url));
+    return NextResponse.redirect(new URL("/vistas", request.url));
   }
 
   return NextResponse.next();

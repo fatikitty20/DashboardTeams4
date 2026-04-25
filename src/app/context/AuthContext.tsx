@@ -11,33 +11,27 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const publicPaths = ["/login", "/"];
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !!localStorage.getItem("auth_token");
+  });
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const token = localStorage.getItem("auth_token");
-    setIsAuthenticated(!!token);
-    setIsChecking(false);
-  }, []);
+    if (!pathname) return;
 
-  useEffect(() => {
-    if (isChecking) return;
-
-    const isPublicPath = publicPaths.some((path) => pathname?.startsWith(path));
+    const isPublicPath = pathname === "/login" || pathname === "/";
 
     if (!isAuthenticated && !isPublicPath) {
       router.push("/login");
     }
 
     if (isAuthenticated && isPublicPath && pathname !== "/") {
-      router.push("/vistas/dashboard");
+      router.push("/vistas");
     }
-  }, [isAuthenticated, isChecking, pathname, router]);
+  }, [isAuthenticated, pathname, router]);
 
   const login = () => {
     localStorage.setItem("auth_token", "true");
@@ -51,10 +45,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAuthenticated(false);
     router.push("/login");
   };
-
-  if (isChecking) {
-    return null;
-  }
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

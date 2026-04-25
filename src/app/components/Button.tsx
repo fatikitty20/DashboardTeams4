@@ -42,11 +42,27 @@ export default function Button({
   };
 
   const variantStyles: Record<string, React.CSSProperties> = {
-    primary: { backgroundColor: "#3b82f6", color: "white" },
+    primary: {
+      background: "linear-gradient(135deg, #6b8e23 0%, #556b2f 100%)",
+      color: "white",
+      boxShadow: "0 2px 8px rgba(107, 142, 35, 0.3)",
+    },
     secondary: { backgroundColor: "#6b7280", color: "white" },
-    outline: { backgroundColor: "transparent", color: "#3b82f6", border: "2px solid #3b82f6" },
-    danger: { backgroundColor: "#ef4444", color: "white" },
-    success: { backgroundColor: "#22c55e", color: "white" },
+    outline: {
+      backgroundColor: "transparent",
+      color: "#6b8e23",
+      border: "1.5px solid #6b8e23",
+    },
+    danger: {
+      backgroundColor: "#ef4444",
+      color: "white",
+      boxShadow: "0 2px 8px rgba(239, 68, 68, 0.3)",
+    },
+    success: {
+      background: "linear-gradient(135deg, #6b8e23 0%, #556b2f 100%)",
+      color: "white",
+      boxShadow: "0 2px 8px rgba(107, 142, 35, 0.3)",
+    },
   };
 
   return (

@@ -4,23 +4,23 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 
-// Iconos SVG en línea
+// Iconos SVG minimalistas
 const EyeIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
     <circle cx="12" cy="12" r="3"></circle>
   </svg>
 );
 
 const EyeOffIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
     <line x1="1" y1="1" x2="23" y2="23"></line>
   </svg>
 );
 
 const LogInIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
     <polyline points="10 17 15 12 10 7"></polyline>
     <line x1="15" y1="12" x2="3" y2="12"></line>
@@ -28,16 +28,22 @@ const LogInIcon = () => (
 );
 
 const MailIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
     <polyline points="22,6 12,13 2,6"></polyline>
   </svg>
 );
 
 const LockIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+  </svg>
+);
+
+const ShieldIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
   </svg>
 );
 
@@ -74,10 +80,10 @@ export default function Login() {
       <div style={styles.card}>
         <div style={styles.logoContainer}>
           <div style={styles.logo}>
-            <LogInIcon />
+            <ShieldIcon />
           </div>
         </div>
-        
+
         <h1 style={styles.title}>Bienvenido</h1>
         <p style={styles.subtitle}>Ingresa tus credenciales para continuar</p>
 
@@ -158,13 +164,13 @@ export default function Login() {
 
 const styles = {
   container: {
-    minHeight: "100vh",
+    minHeight: "100vh" as const,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1e3a5f 100%)",
+    background: "linear-gradient(135deg, #1a2f23 0%, #0d1f17 50%, #14251d 100%)",
     position: "relative" as const,
-    overflow: "hidden",
+    overflow: "hidden" as const,
   },
   backgroundPattern: {
     position: "absolute" as const,
@@ -173,20 +179,21 @@ const styles = {
     right: 0,
     bottom: 0,
     backgroundImage: `
-      radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 30%)
+      radial-gradient(circle at 20% 80%, rgba(107, 142, 35, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(85, 107, 47, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(132, 204, 22, 0.05) 0%, transparent 30%),
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 40px)
     `,
     pointerEvents: "none" as const,
   },
   card: {
-    background: "rgba(255, 255, 255, 0.95)",
+    background: "rgba(255, 255, 255, 0.97)",
     backdropFilter: "blur(20px)",
-    padding: "40px",
-    borderRadius: "24px",
+    padding: "48px 40px",
+    borderRadius: "20px",
     width: "100%",
-    maxWidth: "400px",
-    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
+    maxWidth: "420px",
+    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(107, 142, 35, 0.1)",
     textAlign: "center" as const,
     position: "relative" as const,
     zIndex: 1,
@@ -194,35 +201,38 @@ const styles = {
   logoContainer: {
     display: "flex",
     justifyContent: "center",
-    marginBottom: "24px",
+    marginBottom: "20px",
   },
   logo: {
-    width: "72px",
-    height: "72px",
-    borderRadius: "20px",
-    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+    width: "64px",
+    height: "64px",
+    borderRadius: "16px",
+    background: "linear-gradient(135deg, #6b8e23 0%, #556b2f 100%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: "0 10px 30px rgba(99, 102, 241, 0.4)",
+    color: "#fff",
+    boxShadow: "0 8px 24px rgba(107, 142, 35, 0.35)",
   },
   title: {
-    fontSize: "28px",
-    fontWeight: "700",
-    color: "#111827",
-    marginBottom: "8px",
+    fontSize: "26px",
+    fontWeight: "600",
+    color: "#1a2f23",
+    marginBottom: "6px",
     margin: 0,
+    letterSpacing: "-0.5px",
   },
   subtitle: {
     fontSize: "14px",
     color: "#6b7280",
     marginBottom: "32px",
     margin: "0 0 32px 0",
+    fontWeight: "400",
   },
   form: {
     display: "flex",
     flexDirection: "column" as const,
-    gap: "16px",
+    gap: "18px",
   },
   inputGroup: {
     position: "relative" as const,
@@ -234,78 +244,88 @@ const styles = {
     left: "14px",
     zIndex: 1,
     pointerEvents: "none" as const,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     width: "100%",
     padding: "14px 16px",
-    borderRadius: "12px",
-    border: "2px solid #e5e7eb",
+    borderRadius: "10px",
+    border: "1.5px solid #e5e7eb",
     outline: "none",
-    transition: "all 0.3s ease",
+    transition: "all 0.25s ease",
     fontSize: "15px",
-    color: "#111827",
+    color: "#1f2937",
     backgroundColor: "#f9fafb",
     boxSizing: "border-box" as const,
   },
   showButton: {
     position: "absolute" as const,
-    right: "14px",
+    right: "12px",
     background: "none",
     border: "none",
     cursor: "pointer",
-    padding: "4px",
+    padding: "6px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    transition: "transform 0.2s ease",
+    transition: "transform 0.2s ease, opacity 0.2s ease",
+    opacity: 0.7,
   },
   button: {
     width: "100%",
-    padding: "14px",
-    borderRadius: "12px",
+    padding: "14px 20px",
+    borderRadius: "10px",
     border: "none",
-    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+    background: "linear-gradient(135deg, #6b8e23 0%, #556b2f 50%, #6b8e23 100%)",
+    backgroundSize: "200% 100%",
     color: "#fff",
     cursor: "pointer",
     fontWeight: "600",
-    fontSize: "16px",
+    fontSize: "15px",
     marginTop: "8px",
     transition: "all 0.3s ease",
-    boxShadow: "0 4px 14px rgba(99, 102, 241, 0.4)",
+    boxShadow: "0 4px 14px rgba(107, 142, 35, 0.35)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    gap: "8px",
+    letterSpacing: "0.3px",
   },
   error: {
-    color: "#ef4444",
+    color: "#dc2626",
     fontSize: "13px",
-    marginTop: "-8px",
+    marginTop: "-12px",
     textAlign: "left" as const,
     paddingLeft: "4px",
+    fontWeight: "500",
   },
   successMessage: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "8px",
-    color: "#10b981",
-    marginTop: "16px",
+    color: "#4a7c23",
+    marginTop: "12px",
     fontWeight: "600",
-    fontSize: "15px",
-    padding: "12px",
-    background: "rgba(16, 185, 129, 0.1)",
+    fontSize: "14px",
+    padding: "12px 16px",
+    background: "rgba(107, 142, 35, 0.12)",
     borderRadius: "10px",
+    border: "1px solid rgba(107, 142, 35, 0.2)",
   },
   successIcon: {
-    width: "20px",
-    height: "20px",
-    background: "#10b981",
+    width: "18px",
+    height: "18px",
+    background: "#6b8e23",
     color: "#fff",
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: "12px",
+    fontSize: "11px",
+    fontWeight: "700",
   },
   loadingText: {
     color: "#fff",

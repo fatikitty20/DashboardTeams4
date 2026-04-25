@@ -1,13 +1,29 @@
+/**
+ * Estilos para la página de Login
+ * 
+ * Este archivo contiene todos los estilos CSS para el formulario de autenticación.
+ * Usa CSS Modules para evitar conflictos de nombres con otros componentes.
+ * 
+ * @module login.module.css
+ */
+
+/* ============================================
+   CONTENEDOR PRINCIPAL
+   ============================================ */
+
+/* Contenedor que ocupa toda la pantalla */
 .container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Degradado de fondo azul oscuro */
   background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1e3a5f 100%);
   position: relative;
   overflow: hidden;
 }
 
+/* Patrón de fondo con círculos degradados (efecto visual) */
 .backgroundPattern {
   position: absolute;
   top: 0;
@@ -21,6 +37,7 @@
   pointer-events: none;
 }
 
+/* Tarjeta del formulario */
 .card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
@@ -34,12 +51,14 @@
   z-index: 1;
 }
 
+/* Contenedor del logo */
 .logoContainer {
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
 }
 
+/* Logo circular con gradiente */
 .logo {
   width: 72px;
   height: 72px;

@@ -1,8 +1,21 @@
+/**
+ * Componentes de iconos SVG reutilizables
+ * 
+ * Estos iconos usan SVG en línea para evitar dependencias externas.
+ * Son componentes funcionales que aceptan props de tamaño y clase CSS.
+ * 
+ * @module icons
+ */
+
+// Props base para todos los iconos
 interface IconProps {
-  size?: number;
-  className?: string;
+  size?: number;      // Tamaño del icono en píxeles (default: 18)
+  className?: string; // Clase CSS adicional para estilos
 }
 
+/**
+ * Icono de ojo - representa visibilidad/mostrar contraseña
+ */
 export const EyeIcon = ({ size = 18, className }: IconProps) => (
   <svg
     width={size}
@@ -20,6 +33,9 @@ export const EyeIcon = ({ size = 18, className }: IconProps) => (
   </svg>
 );
 
+/**
+ * Icono de ojo tachado - representa ocultar contraseña
+ */
 export const EyeOffIcon = ({ size = 18, className }: IconProps) => (
   <svg
     width={size}
@@ -37,6 +53,9 @@ export const EyeOffIcon = ({ size = 18, className }: IconProps) => (
   </svg>
 );
 
+/**
+ * Icono de login/entrada - representa acceso o iniciar sesión
+ */
 export const LogInIcon = ({ size = 18, className }: IconProps) => (
   <svg
     width={size}
@@ -55,6 +74,9 @@ export const LogInIcon = ({ size = 18, className }: IconProps) => (
   </svg>
 );
 
+/**
+ * Icono de correo/email - representa buzón de mensajes
+ */
 export const MailIcon = ({ size = 18, className }: IconProps) => (
   <svg
     width={size}
@@ -72,6 +94,9 @@ export const MailIcon = ({ size = 18, className }: IconProps) => (
   </svg>
 );
 
+/**
+ * Icono de candado - representa seguridad o contraseña
+ */
 export const LockIcon = ({ size = 18, className }: IconProps) => (
   <svg
     width={size}

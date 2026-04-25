@@ -1,3 +1,14 @@
+/**
+ * Página de inicio de sesión (Login)
+ * 
+ * Componente que renderiza el formulario de autenticación.
+ * Maneja la validación de credenciales y la navegación después del login.
+ * 
+ * @module login/page
+ */
+
+// "use client" indica que este componente se ejecuta en el navegador
+// Esto es necesario porque usamos hooks de React (useState) y navegación
 "use client";
 
 import { useState } from "react";
@@ -6,7 +17,15 @@ import { useAuth } from "../context/AuthContext";
 import { EyeIcon, EyeOffIcon, LogInIcon, MailIcon, LockIcon } from "../components/icons";
 import styles from "./login.module.css";
 
-// Validaciones
+// ============================================
+// FUNCIONES DE VALIDACIÓN
+// ============================================
+
+/**
+ * Valida el formato del correo electrónico
+ * @param email - Correo a validar
+ * @returns Mensaje de error vacío si es válido, o mensaje de error
+ */
 const validateEmail = (email: string): string => {
   if (!email) return "El correo es requerido";
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -14,6 +33,11 @@ const validateEmail = (email: string): string => {
   return "";
 };
 
+/**
+ * Valida la contraseña del usuario
+ * @param password - Contraseña a validar
+ * @returns Mensaje de error vacío si es válido, o mensaje de error
+ */
 const validatePassword = (password: string): string => {
   if (!password) return "La contraseña es requerida";
   if (password.length < 6) return "Mínimo 6 caracteres";
@@ -21,18 +45,39 @@ const validatePassword = (password: string): string => {
 };
 
 
-export default function Login() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+// ============================================
+// COMPONENTE PRINCIPAL
+// ============================================
 
+/**
+ * Componente de página de login
+ * Maneja el estado del formulario y la autenticación del usuario
+ */
+export default function Login() {
+  // useRouter: hook de Next.js para navegación programática
+  const router = useRouter();
+  
+  // useSearchParams: obtiene parámetros de URL (ej: ?redirect=/dashboard)
+  const searchParams = useSearchParams();
+  
+  // useAuth: hook personalizado que proporciona el contexto de autenticación
+  const { login } = useAuth();
+  
+  // Estados locales del formulario
+  const [email, setEmail] = useState("");           // Valor del campo email
+  const [password, setPassword] = useState("");     // Valor del campo contraseña
+  const [emailError, setEmailError] = useState(""); // Error de validación del email
+  const [passwordError, setPasswordError] = useState(""); // Error de validación del password
+  const [success, setSuccess] = useState(false);    // Muestra mensaje de éxito
+  const [showPassword, setShowPassword] = useState(false); // Alternar visibilidad password
+  const [isLoading, setIsLoading] = useState(false); // Estado de carga durante login
+
+  /**
+   * Maneja el evento de submit del formulario de login
+   * 1. Valida los campos
+   * 2. Si hay errores, los muestra
+   * 3. Si es válido, simula el login y redirige
+   */
   const handleLogin = () => {
     // Validar campos
     const emailErr = validateEmail(email);

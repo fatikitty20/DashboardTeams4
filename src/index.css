@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   DESIGN SYSTEM
+   Dos identidades visuales coexistiendo:
+   - Donezo (dashboard): verde bosque, crema, productividad calmada
+   - Deznit (login):    azul medianoche, menta eléctrica, energía
+   Todos los colores en HSL.
+========================================================= */
+
+@layer base {
+  :root {
+    /* ---------- Tiendanube Dashboard (light) ---------- */
+    /* Inspirado en tiendanube.com — azul cobalto + blanco puro */
+    --background: 210 40% 98%;
+    --foreground: 222 60% 14%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 60% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 60% 14%;
+
+    --primary: 222 75% 38%;            /* azul cobalto Tiendanube */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 70% 95%;
+    --secondary-foreground: 222 75% 38%;
+
+    --muted: 214 32% 95%;
+    --muted-foreground: 220 14% 46%;
+
+    --accent: 217 91% 55%;             /* royal blue para CTAs */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 25% 90%;
+    --input: 214 25% 90%;
+    --ring: 222 75% 38%;
+
+    --radius: 1rem;
+
+    /* Donezo extras (re-mapeados al sistema Tiendanube) */
+    --donezo-cream: 210 40% 98%;
+    --donezo-card: 215 70% 95%;
+    --donezo-deep: 222 75% 22%;        /* azul profundo para tarjetas oscuras */
+    --donezo-leaf: 217 91% 55%;        /* acento azul royal */
+    --donezo-leaf-soft: 210 90% 80%;   /* celeste suave */
+    --donezo-line: 215 25% 80%;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 14% 40%;
+    --sidebar-primary: 222 75% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 70% 95%;
+    --sidebar-accent-foreground: 222 75% 38%;
+    --sidebar-border: 214 25% 92%;
+    --sidebar-ring: 222 75% 38%;
+  }
+
+  /* ---------- Tiendanube Login (deep blue hero) ---------- */
+  .theme-deznit {
+    --background: 222 75% 18%;         /* azul profundo del hero */
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 60% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 60% 14%;
+
+    --primary: 217 91% 55%;            /* botón azul royal */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 222 60% 24%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 214 32% 95%;
+    --muted-foreground: 220 14% 46%;
+
+    --accent: 210 100% 70%;            /* celeste highlight */
+    --accent-foreground: 222 75% 18%;
+
+    --border: 222 40% 30%;
+    --input: 214 25% 90%;
+    --ring: 217 91% 55%;
+
+    /* Tokens Deznit re-mapeados a Tiendanube */
+    --deznit-mint: 217 91% 55%;        /* royal blue (antes mint) */
+    --deznit-mint-soft: 210 100% 75%;  /* celeste suave */
+    --deznit-blue: 222 75% 38%;
+    --deznit-night: 222 75% 18%;
+    --deznit-dot: 222 50% 30%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+}
+
+/* ---------- Utilities ---------- */
+@layer utilities {
+  .donezo-card {
+    background: hsl(var(--donezo-card));
+    border-radius: var(--radius);
+  }
+  .donezo-card-cream {
+    background: hsl(var(--donezo-cream));
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+  }
+  .donezo-card-deep {
+    background: hsl(var(--donezo-deep));
+    color: hsl(var(--primary-foreground));
+    border-radius: var(--radius);
+  }
+  .stripe-pattern {
+    background-image: repeating-linear-gradient(
+      45deg,
+      hsl(var(--donezo-line) / 0.5) 0,
+      hsl(var(--donezo-line) / 0.5) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  }
+  .deznit-dots {
+    background-image: radial-gradient(hsl(var(--deznit-dot)) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+}

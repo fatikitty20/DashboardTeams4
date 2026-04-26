@@ -10,6 +10,8 @@ interface CardProps {
   variant?: "default" | "bordered" | "elevated";
   padding?: "none" | "sm" | "md" | "lg";
   style?: React.CSSProperties;
+  onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onMouseLeave?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export default function Card({
@@ -20,6 +22,8 @@ export default function Card({
   variant = "default",
   padding = "md",
   style,
+  onMouseEnter,
+  onMouseLeave,
 }: CardProps) {
   const variantStyles: Record<string, React.CSSProperties> = {
     default: {
@@ -47,7 +51,11 @@ export default function Card({
   };
 
   return (
-    <div style={{ ...variantStyles[variant], overflow: "hidden", ...style }}>
+    <div 
+      style={{ ...variantStyles[variant], overflow: "hidden", ...style }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       {(title || subtitle) && (
         <div style={{ padding: paddingStyles[padding], paddingBottom: "0" }}>
           {title && (

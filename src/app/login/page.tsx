@@ -59,6 +59,23 @@ export default function Login() {
     setPasswordError("");
     setSuccess(false);
     setIsLoading(true);
+    
+    // Validar credenciales
+    const validEmail = "admin@dashboard.com";
+    const validPassword = "admin123";
+    
+    if (email !== validEmail) {
+      setEmailError("Correo electrónico incorrecto");
+      setIsLoading(false);
+      return;
+    }
+    
+    if (password !== validPassword) {
+      setPasswordError("Contraseña incorrecta");
+      setIsLoading(false);
+      return;
+    }
+    
     setTimeout(() => {
       setIsLoading(false);
       setSuccess(true);
@@ -162,7 +179,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1e3a5f 100%)",
+    background: "#000000",
     position: "relative" as const,
     overflow: "hidden",
   },
@@ -173,20 +190,19 @@ const styles = {
     right: 0,
     bottom: 0,
     backgroundImage: `
-      radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 30%)
+      radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(22, 163, 74, 0.05) 0%, transparent 30%)
     `,
     pointerEvents: "none" as const,
   },
   card: {
-    background: "rgba(255, 255, 255, 0.95)",
-    backdropFilter: "blur(20px)",
+    background: "#ffffff",
     padding: "40px",
-    borderRadius: "24px",
+    borderRadius: "16px",
     width: "100%",
     maxWidth: "400px",
-    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
+    boxShadow: "0 0 40px rgba(34, 197, 94, 0.2)",
     textAlign: "center" as const,
     position: "relative" as const,
     zIndex: 1,
@@ -200,11 +216,11 @@ const styles = {
     width: "72px",
     height: "72px",
     borderRadius: "20px",
-    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+    background: "linear-gradient(135deg, #22c55e, #16a34a)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: "0 10px 30px rgba(99, 102, 241, 0.4)",
+    boxShadow: "0 10px 30px rgba(34, 197, 94, 0.4)",
   },
   title: {
     fontSize: "28px",
@@ -239,12 +255,12 @@ const styles = {
     width: "100%",
     padding: "14px 16px",
     borderRadius: "12px",
-    border: "2px solid #e5e7eb",
+    border: "2px solid #22c55e",
     outline: "none",
     transition: "all 0.3s ease",
     fontSize: "15px",
-    color: "#111827",
-    backgroundColor: "#f9fafb",
+    color: "#000000",
+    backgroundColor: "#ffffff",
     boxSizing: "border-box" as const,
   },
   showButton: {
@@ -264,14 +280,14 @@ const styles = {
     padding: "14px",
     borderRadius: "12px",
     border: "none",
-    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+    background: "linear-gradient(135deg, #22c55e, #16a34a)",
     color: "#fff",
     cursor: "pointer",
     fontWeight: "600",
     fontSize: "16px",
     marginTop: "8px",
     transition: "all 0.3s ease",
-    boxShadow: "0 4px 14px rgba(99, 102, 241, 0.4)",
+    boxShadow: "0 4px 14px rgba(34, 197, 94, 0.4)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

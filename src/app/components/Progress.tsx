@@ -3,7 +3,7 @@
 interface ProgressProps {
   value: number;
   max?: number;
-  variant?: "default" | "success" | "warning" | "danger";
+  variant?: "default" | "success" | "warning" | "danger" | "info" | "purple";
   showLabel?: boolean;
   size?: "sm" | "md";
 }
@@ -22,6 +22,8 @@ export default function Progress({
     success: "#22c55e",
     warning: "#f59e0b",
     danger: "#ef4444",
+    info: "#3b82f6",
+    purple: "#8b5cf6",
   };
 
   const sizeStyles: Record<string, React.CSSProperties> = {

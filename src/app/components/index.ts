@@ -10,3 +10,15 @@ export { default as Modal } from "./Modal";
 export { default as Progress } from "./Progress";
 export { default as Toggle } from "./Toggle";
 export { default as SidebarItem } from "./SidebarItem";
+
+// Componentes Dashboard
+export { default as StatCard } from "./StatCard";
+export { default as ActivityFeed } from "./ActivityFeed";
+export { default as TaskList } from "./TaskList";
+export { default as SimpleBarChart } from "./SimpleBarChart";
+export { default as ProgressBar } from "./ProgressBar";
+export { default as DashboardHeader } from "./DashboardHeader";
+export { default as Sidebar } from "./Sidebar";
+
+// Iconos
+export * from "./Icons";

@@ -28,7 +28,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       router.push("/login");
     }
 
-    if (isAuthenticated && isPublicPath && pathname !== "/") {
+    // Solo redirigir automáticamente si no estamos en la página de login
+    // La página de login maneja su propia redirección después del login
+    if (isAuthenticated && isPublicPath && pathname !== "/" && pathname !== "/login") {
       router.push("/vistas");
     }
   }, [isAuthenticated, pathname, router]);
